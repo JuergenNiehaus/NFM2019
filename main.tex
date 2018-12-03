@@ -1,0 +1,64 @@
+% This is samplepaper.tex, a sample chapter demonstrating the
+% LLNCS macro package for Springer Computer Science proceedings;
+% Version 2.20 of 2017/10/04
+%
+\documentclass[runningheads]{llncs}
+%
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{csquotes}
+\usepackage{todonotes}
+% Used for displaying a sample figure. If possible, figure files should
+% be included in EPS format.
+%
+% If you use the hyperref package, please uncomment the following line
+% to display URLs in blue roman font according to Springer's eBook style:
+\usepackage{hyperref}
+\renewcommand\UrlFont{\color{blue}\rmfamily}
+
+\begin{document}
+%
+\title{Assuring Confidence in the Perception Chain of Highly Automated Vehicles
+\thanks{Funded by the Deutsche Forschungsgemeinschaft under grant number 392437295.}}
+%
+%\titlerunning{Abbreviated paper title}
+% If the paper title is too long for the running head, you can set
+% an abbreviated paper title here
+%
+\author{Werner Damm\inst{1} \and
+Martin Fr\"anzle \inst{1} \and
+Willem Hagemann \inst{1} \and
+Astrid Rakow \inst{1} \and
+Mani Swaminathan \inst{1}}
+%
+\authorrunning{W. Damm et al.}
+% First names are abbreviated in the running head.https://www.overleaf.com/1268442994rnstkwtzmypt
+% If there are more than two authors, 'et al.' is used.
+%
+\institute{University of Oldenburg, Germany \\
+\email{\{damm, fraenzle, hagemann, rakow, swaminathan\}@informatik.uni-oldenburg.de}\\
+}
+%
+\maketitle              % typeset the header of the contribution
+%
+\begin{abstract}
+%The abstract should briefly summarize the contents of the paper in 15--250 words.
+%\keywords{First keyword  \and Second keyword \and Another keyword.}
+We address what is currently perceived as one of the biggest challenges in deployment of Highly Automated vehicles (HAV), by presenting a method and supportive architecture which allows to mathematically prove that the risk of misperceptions of \enquote{relevant} environmental artefacts of an HAV is less than a given level of societally accepted risk. The method requires the derivation of quality guarantees for sensors in different \enquote{Operational Design Domains (ODDs)} \cite{NHTSF}, as encouraged by the NHTSF, and proposes and exploits a range of techniques allowing to ultimately provide rigorous bounds on misclassifications for critical environmental artefacts, under the assumption, that training and test data are stochastically independent and drawn from distributions reflecting real-world traffic. This paper focusses on the presentation of the method and approach, and will be complemented by follow up publications in assessing the approach in realistic settings.
+\keywords{Highly Automated Vehicles, Learning Algorithms, Safety Assurance, Perception Chain}
+\end{abstract}
+%
+%
+\input{Section-1}
+\input{Section-2}
+\input{Section-3}
+\input{Section-4}
+\input{Section-5}
+\input{Section-6}
+\input{Section-7}
+\bibliographystyle{splncs04}
+\bibliography{references.bib}
+
+\end{document}

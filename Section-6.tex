@@ -1,0 +1,19 @@
+\section{State of Art}\label{sec:relatedwork}
+Highly automated vehicles are typically \emph{learning-enabled cyber physical systems} operating in an uncertain environment, where the learning about the \emph{dynamic} environment is enabled through \emph{inaccurate} sensors. This renders an exact inference of the state of the environment infeasible, necessitating representations of the \emph{uncertainty} in inferring about a dynamic environment through inaccurate sensors. Such representations of uncertainty have been investigated a.o. within the paradigm of \emph{probabilistic robotics}~\cite{probrob}, particularly as applied to vehicle localization in urban environments~\cite{Thrun2007,Thrun2009,Thrun2010}. In these and related works such as~\cite{Perrolaz2014, moras2014}, the environment uncertainty is represented as \emph{probabilistic
+beliefs}. 
+
+
+As an example, consider a popular perception technique like simultaneous localization and
+mapping [5] (SLAM), which is used for determining the current position of an autonomous
+vehicle. The estimated position of the vehicle and the coordinates of other entities in the map
+are often assumed to have Gaussian noise. Aside from localization and mapping, another critical
+perception challenge for autonomous vehicles is obstacle detection and tracking [8,27].
+Camera and laser range finders are used to locally detect and avoid obstacles during navigation
+for a previously constructed map. This is particularly useful in the presence of dynamic
+objects whose locations are not fixed in the environment map. The uncertainty in the parametric
+models representing the obstacles is usually also modelled using Gaussian random
+variables
+
+
+
+
