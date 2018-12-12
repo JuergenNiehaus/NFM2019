@@ -5,6 +5,17 @@
 \documentclass[runningheads]{llncs}
 %
 \usepackage{graphicx}
+\makeatletter
+\providecommand{\bigsqcap}{%
+  \mathop{%
+    \mathpalette\@updown\bigsqcup
+  }%
+}
+\newcommand*{\@updown}[2]{%
+  \rotatebox[origin=c]{180}{$\m@th#1#2$}%
+}
+\makeatother
+
 \usepackage{color}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -46,18 +57,20 @@ Mani Swaminathan \inst{1}}
 \begin{abstract}
 %The abstract should briefly summarize the contents of the paper in 15--250 words.
 %\keywords{First keyword  \and Second keyword \and Another keyword.}
-We address \textcolor{red}{one of the key challenges in \emph{assuring the autonomy} of \emph{learning-enabled cyber physical systems} by focussing on the deployment of Highly Automated vehicles (HAV). In particular, we present} a methodology and supportive architecture which allows to mathematically prove that the risk of misperceptions of \enquote{relevant} environmental artefacts of an HAV is less than a given level of societally accepted risk. The method requires the derivation of quality guarantees for sensors in different \enquote{Operational Design Domains (ODDs)}  as encouraged by the NHTSF \cite{NHTSF}, and proposes and exploits a range of techniques allowing to ultimately provide rigorous bounds on misclassifications for critical environmental artefacts, under the assumption that training and test data are stochastically independent and drawn from distributions reflecting real-world traffic. \textcolor{red}{This paper describes work in progress, focussing on the methodology and supportive architecture}.
+We address one of the key challenges in \emph{assuring safety of autonomous} \emph{learning-enabled cyber physical systems}: how can we achieve confidence in the perception chain? We present a methodology and supportive architecture which allows to mathematically prove that the risk of misperceptions of \enquote{relevant} environmental artifacts of a highly autonomous vehicle (HAV) is less than a given level of societally accepted risk. The method requires the derivation of quality guarantees for sensors in different \enquote{Operational Design Domains (ODDs)}  as encouraged by the NHTSA \cite{NHTSF}, and proposes to dynamically adjust thresholds for accepting classification results for those individual artifacts of the environment whose misclassifications comes with drastic safety risks. 
+
 \keywords{Learning-enabled cyber physical systems, Highly Automated Vehicles, Learning Algorithms, Safety Assurance, Perception Chain}
 \end{abstract}
 %
 %
 \input{Section-1}
+\input{Section-6}
 \input{Section-2}
 \input{Section-3}
 \input{Section-4}
 \input{Section-5}
-\input{Section-6}
 \input{Section-7}
+
 \bibliographystyle{splncs04}
 \bibliography{references.bib}
 

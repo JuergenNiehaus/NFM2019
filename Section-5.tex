@@ -1,3 +1,28 @@
 \section{Proving Safe Perception}\label{sec:proofrule}
 Willem and Martin\\
 4,5 pages	concluded at page 13\\
+
+An ontology $O=(L,\sqcap,\sqcup)$ is a distributive lattice over a set $L$ of type labels. A classifier $c_l$ for the type label $l\in L$ takes an artifact $a$ as input and returns a numerical value $c_l(a) \in [\min,\max]$ which corresponds to its degree of conviction that the artifact $a$ is of type $l$.
+Given the upper threshold $g_l^+$ and the lower threshold $g_l^-$ with $g_l^+\geq g_l^-$ we interpret the classification of $a$ as follows
+\begin{gather*}
+    \mathrm{type}(a,c_l,g_l^+,g_l^-) = \left\{
+    \begin{array}{ll}
+    l & \text{ if } c_l(a) \geq g_l^+\\
+    \overline l & \text{ if } c_l(a) < g_l^-\\
+    \top & \text{ otherwise,}
+    \end{array}
+\end{gather*}
+where $\overline l$ denotes the unique complement of $l$.
+
+To combine several classifiers $c_1,c_2,\dots, c_n$ with upper thresholds $g_1^+, g_2^+, \dots, g_n^+$ and lower thresholds $g_1^-, g_2^-, \dots, g_n^-$ we use the vector notion $\mathbf c = (c_1,\dots,c_n)^T$, $\mathbf g^+=(g_1^+,\dots, g_n^+)^T$, $\mathbf g^-=(g_1^-,\dots,g_n^-)^T$ and extend the interpretation of the combined classifier
+\begin{gather*}
+    \mathrm{type}(a,\mathbf c, \mathbf g^+,\mathbf g^-) = 
+    \bigsqcup\limits_{\{i\mid c_i(a)\geq g_i^+\}} l_i \sqcap \bigsqcap\limits_{\{i\mid c_i(a)< g_i^-\}} \overline{l_i},
+\end{gather*}
+with the convention that $\bigsqcup_{\{i\mid c_i(a)\geq g_i^+\}} l_i=\top$ if $\{i\mid c_i(a)\geq g_i^+\}$ is empty. That is, positive evidence ($c_i(a)\geq g_i^+$) is escalated towards $\top$ in the ontology and negative evidence ($c_i(a)<g_i^-$) is used to descend towards $\bot$.
+
+
+
+
+
+

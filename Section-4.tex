@@ -1,3 +1,29 @@
 \section{A simple example}\label{sec:example}
-Astrid\\
-1 page		concluded at page 8,5
+Let us assume the ego car is at a situation as the blue car in Fig. \ref{fig:obstacle}.\todo{WH:Eine Beschriftung der Fahrzeuge im Bild w\"aere vorteilhaft}  
+Further let its goals be collision freedom and to avoid emergency maneuvers.
+%
+%For now let there be a (fused) sensor not in adverse conditions for each grid partition. 
+For our scenario, we assume  that the learning components are able to detect the road and lane separation line from the fused data of the occupancy grid at times $t-\Delta$ to $t$. That is belief($t-\Delta$),\ldots, belief($t$) is guaranteed with sufficiently bounded  measurement tolerances and a sufficiently high confidence. Moreover, ego is able to identify two artifacts $A_1$ and $A_2$ (cf. in Fig. \ref{fig:artifacts}) within its occupancy grid with high confidence.  
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.4\textwidth]{ego+artifacts.eps}
+	\caption{Ego's perceptions}\label{fig:artifacts}
+\end{figure}
+Let the learning components have determined (based on the sensor measurements) that $A_1$ is some vehicle and that it is not moving. 
+Further the learner L(vehicle) classifies $A_2$  with high confidence as a vehicle. Let at time $t$ no other classifier notifies to recognize the artifact --no resolution of percepts is hence required. Based on its beliefs that $A_2$ is a moving vehicle while $A_1$ is a non-moving obstacle, the ego car applies a general dynamics model in its predictions of possible future evolutions and decides that a circumvention of the obstacle is too dangerous since the oncoming traffic might be too fast. As time goes by and ego comes closer to $A_2$ and $A_1$, the classifier for tractor L(tractor) is confident that  $A_2$ is actually tractor.
+
+Since the previous belief of $A_2$ being a vehicle and the new belief of $A_2$ being a tractor is compatible, the resolution component derives that $A_2$ is believed to be a tractor. The prediction engine computes the possible future based on the belief that $A_1$ is a  non moving vehicle and $A_2$ is a tractor and determines that a circumvention maneuver is safe. Since the ego vehicle wants to avoid harsh braking, the maneuver selection determines a maneuver plan to circumvent $A_1$.
+
+This example illustrates that classifications of different detail are relevant for taking the decision on the right maneuver. While it is sufficient to classify $A_1$ as a non-moving obstacle, the decision is highly sensitive to a more precise classification of $A_2$ the oncoming vehicle.
+
+
+In our scenario, ego prioritizes collision-avoidance over driving fast, it hence is interested in having a classification with a high specificity, i.e., ego wants to know that there is no tractor. Moreover ego can only base its decision on such a classification if the classifier is sufficiently good. We assume that for a safety critical decision, a very high specificity on the test data set is required.
+In order to allow optimal decision for achieving the less prioritized goal of driving fast, high sensitivity of the classifier is needed, i.e., ego wants to know whether there is a tractor, because then ego can overtake. Since we here the goal is of less priority, we require that the sensitivity may be less than the specificity. 
+
+Since the currently active list of goals change over time (driving fast to an appoint, but after the appoint driving more relaxed), the requirements on the classifiers change over time as well.  
+
+
+
+
+
