@@ -15,7 +15,7 @@
   \rotatebox[origin=c]{180}{$\m@th#1#2$}%
 }
 \makeatother
-
+\usepackage{subcaption}
 \usepackage{color}
 \usepackage{amsmath}
 \usepackage{amssymb}
@@ -28,7 +28,9 @@
 % to display URLs in blue roman font according to Springer's eBook style:
 \usepackage{hyperref}
 \renewcommand\UrlFont{\color{blue}\rmfamily}
-
+\newcommand{\TPR}{\ensuremath{\mathrm{TPR}}}
+\newcommand{\FPR}{\ensuremath{\mathrm{FPR}}}
+\newcommand{\Label}{\ensuremath{\mathrm{label}}}
 \begin{document}
 %
 \title{Assuring Confidence in the Perception Chain of Highly Automated Vehicles
