@@ -52,27 +52,84 @@ $\widehat\FPR(g_l^+)$ represents the expected value of the conditional probabili
 
 \subsection{Classifier Optimization}
 Let $\Phi$ be a formula that restricts the availability of a maneuver in favor of safety. 
-E.g.\ $\Phi$ allows a fast transit of a critical passage only if it can be ensured that there a no humans on the sidewalk. In such a setting $\Phi = l_1 \land \l2 \land \dots \land l_n$ is a conjunction of literals $l_i=\lnot A_i$ of the form ``it is false that there is a human at cell $c_i$''. The truth value of each atom $A_i$ directly depends on a classifier output, which is, in our example, a human classifier. Our goal is to find an optimal threshold values for the related classifiers, separately for each cell,
+E.g.\ $\Phi$ allows a fast transit of a critical passage only if it can be ensured that there a no humans on the sidewalk. In such a setting $\Phi = \lit_1 \land \lit_2 \land \dots \land \lit_n$ is a conjunction of literals $\lit_i=\lnot A_i$ of the form ``it is false that there is a human at cell $c_i$''. The truth value of each atom $A_i$ directly depends on a classifier output, which is, in our example, a human classifier. Our goal is to find an optimal threshold values for the related classifiers, separately for each cell,
 such that the risk of misperception is restricted to a given safety bound
-$\epsilon$ while the availability is maximized.
+$\epsilon$ while the availability is maximized. In the following we show that
+this problem can be translated into a polynomial optimization problem.
 
-We want to ensure that the false positive rate of $\Phi$ is below a
-given threshold $\epsilon$. Clearly, $\Phi$ is false if at least one literal
-is a false positive. On the other hand, $\Phi$ is positive if and only if
-all literals are positive. Taking both arguments together yields that
-$\Phi$ is a false positive if and only if all literals are false positives.
+To ease the argumentation, we stipulate that $\Phi$ being true increases
+the availability while $\Phi$ being false leads to safe
+maneuvers only. Hence, we want to maximize the true positve rate of a formula $\Phi$ while ensuring that the false negative rate of $\Phi$ is below a given threshold $\epsilon$. With out loss of generality we assume that $\Phi$ is given in distributive normal form. We show how
+to rewrite the initial optimization problem
+\begin{align*}
+  \textrm{maximize} &\ \TPR_\Phi\\
+  \textrm{s.t.} &\ \FNR_\phi\leq \epsilon\text.
+\end{align*}
 
-Recall, that the false positive rates under consideration corresponds
-to the expected value of conditional probabilities.
-For stochastically independent events we have the identity 
-$p(A_1|B_1)\cdot p(A_2|B_2) = p(A_1,A_2|B_1,B_2)$. Under the assumption that
-the underlying classifiers of two literals are stochastically independent,
-this allows us to represent the false negative rate of a conjunction as the
-product of the literals. The same argument holds for the true positive rate.
+\begin{enumerate}
+\item Let $\Phi = \phi_1 \lor \phi_2 \lor \phi_n$ be a disjunction of
+  subformulas $\phi_1$, \dots, $\phi_n$.
+  It holds $\sum_{i=1}^n \FNR_{\phi_i} \geq \FNR_{\Phi}$ and
+  $\sum_{i=1}^n \TPR_{\phi_i} \geq \TPR_{\Phi}$. Hence
+  we restate the initial optimization problem as follows:
+  \begin{align}
+    \textrm{maximize} &\ \sum_{i=1}^n \TPR_{\phi_i}\\
+    \textrm{s.t.} &\ \sum_{i=1}^n \FNR_{\phi_i} \leq \epsilon\text.
+    \label{eq:optimization2}
+  \end{align}
+  Any optimal solution of this optimization problem is also a
+  feasible solution of the initial optimization problem, but not necessarily
+  an optimal solution.
+\item Let $\Phi = \lit_1 \land \lit_2 \land \dots \land \lit_n$
+  be a conjunction of literals.
+  %We want to ensure that the false negative
+  %rate of $\Phi$ is below a given threshold $\epsilon$. Clearly,
+  %$\Phi$ is false if at least one literal is a false positive.
+  %On the other hand, $\Phi$ is positive if and only if all literals
+  %are positive. Taking both arguments together yields that
+  %$\Phi$ is a false positive if and only if all literals are false positives.
 
-Hence, we are allowed to distribute a given threshold $\epsilon$ for the
-false positive rate of $\Phi$, i.e., $\FPR_\Phi+\epsilon\geq\widehat{\FPR_\Phi}$ to the literals $\prod\epsilon_i = \epsilon$ such that $\epsilon_i$
-is an individual threshold for the false positive rate for the literals $l_i$.
+  Recall, that the rates under consideration corresponds
+  to the expected value of conditional probabilities.
+  For stochastically independent events we have the identity 
+  $p(A_1|B_1)\cdot p(A_2|B_2) = p(A_1,A_2|B_1,B_2)$. Under the assumption that
+  the underlying classifiers of two literals are stochastically independent,
+  this allows us to represent the false negative rate of a conjunction as the
+  product of the literals. The same argument holds for the true positive rate.
+  It follows that $\TPR_\Phi = \prod_{i=1}^n \TPR_{\lit_i}$ and
+  $\FNR_\Phi = \prod_{i=1}^n \FNR_{\lit_i}$.
+  
+  %Hence, we are allowed to distribute a given threshold $\epsilon$ for the
+  %false negative rate of $\Phi$, i.e.,
+  %$\FPR_\Phi+\epsilon\geq\widehat{\FPR_\Phi}$ to the literals
+  %$\prod\epsilon_i = \epsilon$ such that $\epsilon_i$
+  %is an individual threshold for the false positive rate for the
+  %literals $l_i$.
+  The optimization problem \eqref{eq:optimization2} can be transformed to
+  \begin{align*}
+    \textrm{maximize} &\ \sum_i \prod_j \TPR_{\lit_{i,j}}\\
+    \textrm{s.t.} &\ \sum_i\prod_j \FNR_{\lit_{i,j}} \leq \epsilon\text.
+  \end{align*}
+\item Let $\Phi$ be a single literal of the form $\lnot A$,
+  where $A$ corresponds to the classifier $c_l$.
+  The false negative rate $\FNR_\Phi$ corresponds to the false positive rate
+  of $c_l$. %E.g.\ let $\Phi$ be formula which guards a cell which we would
+  %like to enter, where $\Phi$ is true if the cell is free of obstacles.
+  We have to ensure that the false positive rate of the
+  classifier $c_l$ is under a certain threshold, yielding a lower bound for
+  $g_l^+$. To optimize the true positive rate of $\Phi$, we optimize
+  the true negative rate of $c_l$, that is we aim for minimizing $g_l+$ with
+  $g_l^+\geq g_l^-$.
+  
+  Clearly, for $\Phi=A$, where $A$ is an atom $A$ corresponding
+  to the classifier $c_l$, the false negative rate and true positive rate
+  of $\Phi$ coincides with the corresponding rates of $c_l$.
+\end{enumerate}
+
+We have shown how to translate a safety relevant formula $\Phi$ into a polynomialoptimization problem on the individual thresholds of the classifiers.
+
+\endinput
+
 
 %which -- in turn -- finally yields a threshold for the related classifiers, i.e., $\FPR(g^-)+\epsilon_i \geq  \widehat{\FPR(g^-)}$.
 %
