@@ -53,7 +53,7 @@ $\widehat\FPR(g_l^+)$ represents the expected value of the conditional probabili
 \subsection{Classifier Optimization}
 Let $\Phi$ be a formula that restricts the availability of a maneuver in favor of safety. 
 E.g.\ $\Phi$ allows a fast transit of a critical passage only if it can be ensured that there a no humans on the sidewalk. In such a setting $\Phi = l_1 \land \l2 \land \dots \land l_n$ is a conjunction of literals $l_i=\lnot A_i$ of the form ``it is false that there is a human at cell $c_i$''. The truth value of each atom $A_i$ directly depends on a classifier output, which is, in our example, a human classifier. Our goal is to find an optimal threshold values for the related classifiers, separately for each cell,
-such that the risk of missperception is restricted to a given safety bound
+such that the risk of misperception is restricted to a given safety bound
 $\epsilon$ while the availability is maximized.
 
 We want to ensure that the false positive rate of $\Phi$ is below a
@@ -66,7 +66,7 @@ Recall, that the false positive rates under consideration corresponds
 to the expected value of conditional probabilities.
 For stochastically independent events we have the identity 
 $p(A_1|B_1)\cdot p(A_2|B_2) = p(A_1,A_2|B_1,B_2)$. Under the assumption that
-the underlying classifiers of two literals are stochstically independent,
+the underlying classifiers of two literals are stochastically independent,
 this allows us to represent the false negative rate of a conjunction as the
 product of the literals. The same argument holds for the true positive rate.
 
