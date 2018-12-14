@@ -46,13 +46,12 @@ The situation is depicted in Fig. \ref{fig:ros}.
 
 \subsection{Classifier Optimization}
 Let $\Phi$ be a formula that restricts the availability of a maneuver in favor of safety. 
-E.g.\ $\Phi$ allows a fast transit of a critical passage only if it can be ensured that there a no humans on the sidewalk. In such a setting $\Phi = A_1 \land A_2 \land \dots \land A_n$ is a conjunction of atoms $A_1 \dot A_n$ of the form "there is no human at cell $c_i$". That is the truth value of each atom $A_i$ directly depends on a classifier output. Our goal is to find optimal threshold values for the related classifiers individually for each cell such that the false positive rate for the formula $\Phi$ is below a certain threshold $\epsilon$, while on the hand we want to maximize the true positive rate for $\Phi$ to enable availability as far as possible.
+E.g.\ $\Phi$ allows a fast transit of a critical passage only if it can be ensured that there a no humans on the sidewalk. In such a setting $\Phi = A_1 \land A_2 \land \dots \land A_n$ is a conjunction of atoms $A_i$ of the form ``there is no human at cell $c_i$''. That is, the truth value of each atom $A_i$ directly depends on a classifier output. Our goal is to find optimal threshold values for the related classifiers for each cell indivually such that the false positive rate for the formula $\Phi$ is below a certain threshold $\epsilon$, while on the hand we want to maximize the true positive rate for $\Phi$ to enable availability as far as possible.
 To clarify the argumentation, we stick to the situation given in the simple example: Under the assumption that there is a classifier for humans, false positives refer to the $\FPR^-$ category, while true positives, on the other hand, refer to the $\FPR^+$ category.
 
 A false positive for $\Phi$ occurs only if all classifiers related to the atoms 
-$A_1$, \dots, $A_n$ produce a false positive. Since otherwise either there are some
-atoms in an unknown state, yielding an unknown state for $\Phi$, or there is at least
-one atom producing a true positive, i.e.\ it correctly identifies a human. In both cases $\Phi$ does not belong to allocation bases for false negatives.% Again, this consideration emphasizes the importance to maximize the true positive rate.
+$A_1$, \dots, $A_n$ produce a false positive. Since otherwise either there are some atoms in an unknown state yielding an unknown state for $\Phi$, or there is at least
+one atom $A_i$ producing a true positive, i.e., $A_i$ correctly identified a human. In both cases $\Phi$ does not belong to allocation bases for false negatives.% Again, this consideration emphasizes the importance to maximize the true positive rate.
 Hence, if $\Phi$ is a conjunction of atoms $A_1,\dots,A_n$, we are allowed to distribute a given threshold $\epsilon$ for the false positive rate of $\Phi$, i.e., $\FPR_\Phi+\epsilon\geq\widehat{\FPR_\Phi}$ to its atoms with 
 $\prod\epsilon_i = \epsilon$ such that $\epsilon_i$ is an individual threshold for the false positive rate for the atoms $A_i$, which -- in turn -- finally yields a threshold for the related classifiers, i.e., $\FPR(g)+\epsilon_i \geq  \widehat{\FPR(g)}$.
 
