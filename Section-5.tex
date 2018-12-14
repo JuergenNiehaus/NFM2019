@@ -16,25 +16,28 @@ We use the short notation $\Label(c_l)(a)$ when the thresholds are fixed.
 
 There are various quality measures for classifiers. A classifier is evaluated against a given a test data set $T$, where $T$ is a set of correct and complete labeled and representative set of artifacts. Hence, for each label $l\in\mathcal L$, we obtain a partitioning of $T=T(l) \cup T(\overline l)$ into the set $T(l)$ of artifacts which are labeled with $l$ and its complement $T(\overline l)$. The number of elements is denoted by $n_l$ and $n_{\overline l}$, respectively.
 
-To analyze a classifier $c_l$ we are mainly interested in the relation between the thresholds $g_l^+$ and $g_l^-$ and the true positive rate (\TPR) and the false positive rate (\FPR). For each classifier we obtain two ROC curves (receiver operating characteristics):
+To analyze a classifier $c_l$ we are mainly interested in the relation between the threshold $g_l^+$, the true positive rate (\TPR), and the false positive rate (\FPR) on the one hand, and the relation between the threshold $g_l^-$, 
+the true negative rate (\TNR), and the false negative rate (\FNR) on the other.
+For each classifier we obtain two ROC curves (receiver operating characteristics):
 \begin{itemize}
-\item ROC curve $R^+$ represents the relationship of $\TPR^+(g_l^+)$ and $\FPR^+(g_l^+)$,
+\item ROC curve $RP$ represents the relationship of $\TPR(g_l^+)$ and $\FPR(g_l^+)$,
 where
 \begin{gather*}
-    \TPR^+(g_l^+) = \frac{ | T(l) \cap \{ c_l(a) \geq g_l^+ \}|}{|T(l)|},\quad
-    \FPR^+(g_l^+) = \frac{ | t(\overline l) \cap \{ c_l(a) \geq g_l^+ \}|}{|T(\overline l)|}
+    \TPR(g_l^+) = \frac{ | T(l) \cap \{ c_l(a) \geq g_l^+ \}|}{|T(l)|},\quad
+    \FPR(g_l^+) = \frac{ | T(\overline l) \cap \{ c_l(a) \geq g_l^+ \}|}{|T(\overline l)|}
 \end{gather*}
-\item ROC curve $R^-$ represents the relationship of $\TPR^-(g_l^-)$ and $\FPR^-(g_l^-)$, where
+\item ROC curve $RN$ represents the relationship of $\TNR(g_l^-)$ and $\FNR(g_l^-)$, where
 \begin{gather*}
-    \TPR^-(g_l^-) = \frac{ | T(\overline a) \cap \{c_l(a) < g_l^- \}|}{|T(\overline l)|},\quad
-    \FPR^-(g_l^-) = \frac{ | T(l) \cap \{c_l(a) < g_l^- \}|}{|T(l)|}.
+    \TNR(g_l^-) = \frac{ | T(\overline a) \cap \{c_l(a) < g_l^- \}|}{|T(\overline l)|},\quad
+    \FNR(g_l^-) = \frac{ | T(l) \cap \{c_l(a) < g_l^- \}|}{|T(l)|}.
 \end{gather*}
 \end{itemize}
 The rates as given above are measured against the fixed test data set.
-According to Hoeffding's inequality we can derive the following bounds for the estimated false positive rates $\widehat\FPR$:
+According to Hoeffding's inequality we can derive the following bounds for the estimated false positive rates $\widehat\FPR$ and the estimated
+false negative rate $\widehat\FNR$:
 \begin{gather*}
-    \FPR^+(g_l^+) + \epsilon \geq \widehat\FPR^+(g_l^+) \text{ with confidence $\beta$ if } \beta \leq 1 - e^{-2|T(\overline l)|\epsilon^2}\\
-    \FPR^+(g_l^+) + \epsilon \geq \widehat\FPR^+(g_l^+) \text{ with confidence $\beta$ if } \beta \leq 1 - e^{-2|T(l)|\epsilon^2}
+    \FPR(g_l^+) + \epsilon \geq \widehat\FPR(g_l^+) \text{ with confidence $\beta$ if } \beta \leq 1 - e^{-2|T(\overline l)|\epsilon^2}\\
+    \FNR(g_l^-) + \epsilon \geq \widehat\FNR(g_l^-) \text{ with confidence $\beta$ if } \beta \leq 1 - e^{-2|T(l)|\epsilon^2}
 \end{gather*}
 The situation is depicted in Fig. \ref{fig:ros}.
 \begin{figure}
@@ -44,19 +47,39 @@ The situation is depicted in Fig. \ref{fig:ros}.
     \label{fig:ros}
 \end{figure}
 
+Note, that the rate above correspond to unknown conditional probabilities. E.g.\
+$\widehat\FPR(g_l^+)$ represents the expected value of the conditional probability $p( c_l(a)\geq g_l^+ \mid a\in T(l))$.
+
 \subsection{Classifier Optimization}
 Let $\Phi$ be a formula that restricts the availability of a maneuver in favor of safety. 
-E.g.\ $\Phi$ allows a fast transit of a critical passage only if it can be ensured that there a no humans on the sidewalk. In such a setting $\Phi = A_1 \land A_2 \land \dots \land A_n$ is a conjunction of atoms $A_i$ of the form ``there is no human at cell $c_i$''. That is, the truth value of each atom $A_i$ directly depends on a classifier output. Our goal is to find optimal threshold values for the related classifiers for each cell indivually such that the false positive rate for the formula $\Phi$ is below a certain threshold $\epsilon$, while on the hand we want to maximize the true positive rate for $\Phi$ to enable availability as far as possible.
-To clarify the argumentation, we stick to the situation given in the simple example: Under the assumption that there is a classifier for humans, false positives refer to the $\FPR^-$ category, while true positives, on the other hand, refer to the $\FPR^+$ category.
+E.g.\ $\Phi$ allows a fast transit of a critical passage only if it can be ensured that there a no humans on the sidewalk. In such a setting $\Phi = l_1 \land \l2 \land \dots \land l_n$ is a conjunction of literals $l_i=\lnot A_i$ of the form ``it is false that there is a human at cell $c_i$''. The truth value of each atom $A_i$ directly depends on a classifier output, which is, in our example, a human classifier. Our goal is to find an optimal threshold values for the related classifiers, separately for each cell,
+such that the risk of missperception is restricted to a given safety bound
+$\epsilon$ while the availability is maximized.
 
-A false positive for $\Phi$ occurs only if all classifiers related to the atoms 
-$A_1$, \dots, $A_n$ produce a false positive. Since otherwise either there are some atoms in an unknown state yielding an unknown state for $\Phi$, or there is at least
-one atom $A_i$ producing a true positive, i.e., $A_i$ correctly identified a human. In both cases $\Phi$ does not belong to allocation bases for false negatives.% Again, this consideration emphasizes the importance to maximize the true positive rate.
-Hence, if $\Phi$ is a conjunction of atoms $A_1,\dots,A_n$, we are allowed to distribute a given threshold $\epsilon$ for the false positive rate of $\Phi$, i.e., $\FPR_\Phi+\epsilon\geq\widehat{\FPR_\Phi}$ to its atoms with 
-$\prod\epsilon_i = \epsilon$ such that $\epsilon_i$ is an individual threshold for the false positive rate for the atoms $A_i$, which -- in turn -- finally yields a threshold for the related classifiers, i.e., $\FPR(g)+\epsilon_i \geq  \widehat{\FPR(g)}$.
+We want to ensure that the false positive rate of $\Phi$ is below a
+given threshold $\epsilon$. Clearly, $\Phi$ is false if at least one literal
+is a false positive. On the other hand, $\Phi$ is positive if and only if
+all literals are positive. Taking both arguments together yields that
+$\Phi$ is a false positive if and only if all literals are false positives.
 
+Recall, that the false positive rates under consideration corresponds
+to the expected value of conditional probabilities.
+For stochastically independent events we have the identity 
+$p(A_1|B_1)\cdot p(A_2|B_2) = p(A_1,A_2|B_1,B_2)$. Under the assumption that
+the underlying classifiers of two literals are stochstically independent,
+this allows us to represent the false negative rate of a conjunction as the
+product of the literals. The same argument holds for the true positive rate.
 
+Hence, we are allowed to distribute a given threshold $\epsilon$ for the
+false positive rate of $\Phi$, i.e., $\FPR_\Phi+\epsilon\geq\widehat{\FPR_\Phi}$ to the literals $\prod\epsilon_i = \epsilon$ such that $\epsilon_i$
+is an individual threshold for the false positive rate for the literals $l_i$.
 
+%which -- in turn -- finally yields a threshold for the related classifiers, i.e., $\FPR(g^-)+\epsilon_i \geq  \widehat{\FPR(g^-)}$.
+%
+%Wie bekommen wir jetzt eine Abschätzung für die TP-Rate?
+%Wir haben nun $g^-$ möglichst scharf gestellt.
+%Wählen wir nun $g^- = g^+$, dann haben wir die Situation, dass wir größer oder gleich
+%$g^-$ ist, suchen wir nun eine Einstellung für $g^+$, so dass wir, wenn
 
 
 
