@@ -16,7 +16,7 @@ We provide a formal quality requirement on sensors by adapting the safe percepti
 
 \begin{align}\label{eq:safelabelling(s,pos)}
     \textit{Safe}\_&\textit{labelling(s,pos)} \equiv 					\\		
- & \forall a\in\textit{ observables(TS(ego))}\forall p \in \textit{occupancy grid(ego)}:\nonumber\\  
+ & \forall a\in\textit{ observables(TS(ego))}\forall p \in \textit{occupancy grid(ego)}:\nonumber\\  
 & \Box (\textit{relevant}(a) \land a \textit{ is at } p\land p\in \textit{visible(s,pos)} \nonumber\\
 & \Rightarrow P(\neg( \Box_{\leq\Delta} d_{a,s}(a,\textit{label}(a))\leq\delta_{a,s}))) < r_s\nonumber
 \end{align}
